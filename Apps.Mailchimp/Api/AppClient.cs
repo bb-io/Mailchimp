@@ -1,4 +1,4 @@
-namespace Apps.App.Api;
+namespace Apps.Mailchimp.Api;
 
 public class AppClient
 {
