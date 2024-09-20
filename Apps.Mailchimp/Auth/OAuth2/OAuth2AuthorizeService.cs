@@ -15,7 +15,7 @@ public class OAuth2AuthorizeService(InvocationContext invocationContext)
         var parameters = new Dictionary<string, string>
         {
             { "response_type", "code" },
-            { "client_id", CredNames.ClientId },
+            { "client_id", ApplicationConstants.ClientId },
             { "redirect_uri", InvocationContext.UriInfo.ImplicitGrantRedirectUri.ToString() },
             { "state", values["state"] }
         };

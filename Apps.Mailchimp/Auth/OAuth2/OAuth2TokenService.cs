@@ -36,8 +36,8 @@ public class OAuth2TokenService(InvocationContext invocationContext)
                 .WithJsonBody(new
                 {
                     grant_type = "authorization_code",
-                    client_id = CredNames.ClientId,
-                    client_secret = CredNames.ClientSecret,
+                    client_id = ApplicationConstants.ClientId,
+                    client_secret = ApplicationConstants.ClientSecret,
                     redirect_uri = InvocationContext.UriInfo.ImplicitGrantRedirectUri.ToString(),
                     code
                 });
