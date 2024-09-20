@@ -20,6 +20,11 @@ public class OAuth2AuthorizeService(InvocationContext invocationContext)
             { "state", values["state"] }
         };
         
+        WebhookLogger.LogAsync(new
+        {
+            parameters
+        }).Wait();
+        
         return QueryHelpers.AddQueryString(oauthUrl, parameters!);
     }
 }
