@@ -2,9 +2,9 @@ namespace Apps.Mailchimp.Constants;
 
 public static class CredNames
 {
-    public static string ClientId => "client_id";
+    public static string ClientId => "#{MAILCHIMP_CLIENT_ID}#";
     
-    public static string ClientSecret => "client_secret";
+    public static string ClientSecret => "#{MAILCHIMP_CLIENT_SECRET}#"; 
     
     public static string AccessToken => "access_token";
     

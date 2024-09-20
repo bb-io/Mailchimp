@@ -5,10 +5,15 @@ using Blackbird.Applications.Sdk.Common.Invocation;
 
 namespace Apps.Mailchimp.Invocables;
 
-public class AppInvocable(InvocationContext invocationContext) : BaseInvocable(invocationContext)
+public class AppInvocable : BaseInvocable
 {
+    public AppInvocable(InvocationContext invocationContext) : base(invocationContext)
+    {
+        Client = new ApiClient(Creds);
+    }
+    
     protected AuthenticationCredentialsProvider[] Creds =>
         InvocationContext.AuthenticationCredentialsProviders.ToArray();
 
-    protected AppClient Client { get; } = new();
+    protected ApiClient Client { get; }
 }
