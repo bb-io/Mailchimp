@@ -37,7 +37,7 @@ public class CreateCampaignRequest
     [Display("To name", Description = "Use Mailchimp Conversation feature to manage out-of-office replies.")] 
     public string? ToName { get; set; }
 
-    [Display("Folder ID", Description = "If the campaign is listed in a folder, the id for that folder.")] 
+    [Display("Folder ID", Description = "If the campaign is listed in a folder, the id for that folder."), DataSource(typeof(FolderDataSource))] 
     public string? FolderId { get; set; }
 
     [Display("Authenticate", Description = "Whether Mailchimp authenticated the campaign. Defaults to true.")] 
