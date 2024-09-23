@@ -130,7 +130,7 @@ public class CampaignPollingList(InvocationContext invocationContext) : AppInvoc
             entities.Add(new()
             {
                 CampaignId = campaign.Id,
-                HtmlContentHash = HashHelper.ConvertStringToHash(content.Html)
+                HtmlContentHash = HashHelper.ConvertStringToHash(content.Html ?? string.Empty)
             });
         }
 

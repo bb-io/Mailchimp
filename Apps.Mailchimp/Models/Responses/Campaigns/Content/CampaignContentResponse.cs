@@ -8,11 +8,11 @@ public class CampaignContentResponse
     public List<VariateContentResponse> VariateContents { get; set; } = new();
   
     [Display("Plain text")]
-    public string PlainText { get; set; } = default!;
+    public string? PlainText { get; set; } = default!;
 
     [Display("HTML content")]
-    public string Html { get; set; } = default!;
+    public string? Html { get; set; } = default!;
 
     [Display("Archive HTML")]
-    public string ArchiveHtml { get; set; } = default!;
+    public string? ArchiveHtml { get; set; } = default!;
 }
