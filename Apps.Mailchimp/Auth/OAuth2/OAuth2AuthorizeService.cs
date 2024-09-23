@@ -15,7 +15,7 @@ public class OAuth2AuthorizeService(InvocationContext invocationContext)
         {
             { "response_type", "code" },
             { "client_id", ApplicationConstants.ClientId },
-            { "redirect_uri", InvocationContext.UriInfo.ImplicitGrantRedirectUri.ToString() },
+            { "redirect_uri", InvocationContext.UriInfo.AuthorizationCodeRedirectUri.ToString() },
             { "state", values["state"] }
         };
         

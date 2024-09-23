@@ -29,39 +29,55 @@ public class OAuth2TokenService(InvocationContext invocationContext)
         Dictionary<string, string> values, 
         CancellationToken cancellationToken)
     {
-        var tokenUrl = "https://login.mailchimp.com/oauth2/token";
-        var restRequest = new RestRequest(tokenUrl, Method.Post)
-            .AddParameter("grant_type", "authorization_code")
-            .AddParameter("client_id", ApplicationConstants.ClientId)
-            .AddParameter("client_secret", ApplicationConstants.ClientSecret)
-            .AddParameter("redirect_uri", InvocationContext.UriInfo.ImplicitGrantRedirectUri.ToString())
-            .AddParameter("code", code);
-
-        var client = new RestClient();
-        var response = await client.ExecuteAsync(restRequest, cancellationToken);
-        var tokenResponse = JsonConvert.DeserializeObject<OAuth2TokenResponse>(response.Content!)!;
-
-        await WebhookLogger.LogAsync(new
+        try
         {
-            tokenResponse,
-            response.Content
-        });
+            await WebhookLogger.LogAsync(new
+            {
+                message = "Getting token",
+                state,
+                code,
+                values
+            });
+            
+            var tokenUrl = "https://login.mailchimp.com/oauth2/token";
+            var restRequest = new RestRequest(tokenUrl, Method.Post)
+                .AddParameter("grant_type", "authorization_code")
+                .AddParameter("client_id", ApplicationConstants.ClientId)
+                .AddParameter("client_secret", ApplicationConstants.ClientSecret)
+                .AddParameter("redirect_uri", InvocationContext.UriInfo.ImplicitGrantRedirectUri.ToString())
+                .AddParameter("code", code);
 
-        var metadataUrl = "https://login.mailchimp.com/oauth2/metadata";
-        var metadataRequest = new RestRequest(metadataUrl)
-            .AddHeader("Authorization", $"OAuth {tokenResponse.AccessToken}");
+            var client = new RestClient();
+            var response = await client.ExecuteAsync(restRequest, cancellationToken);
+            var tokenResponse = JsonConvert.DeserializeObject<OAuth2TokenResponse>(response.Content!)!;
 
-        var metadataResponse = await client.ExecuteAsync(metadataRequest, cancellationToken);
-        var metadata = JsonConvert.DeserializeObject<OAuth2MetadataResponse>(metadataResponse.Content!)!;
+            await WebhookLogger.LogAsync(new
+            {
+                tokenResponse,
+                response.Content
+            });
 
-        await WebhookLogger.LogAsync(new
+            var metadataUrl = "https://login.mailchimp.com/oauth2/metadata";
+            var metadataRequest = new RestRequest(metadataUrl)
+                .AddHeader("Authorization", $"OAuth {tokenResponse.AccessToken}");
+
+            var metadataResponse = await client.ExecuteAsync(metadataRequest, cancellationToken);
+            var metadata = JsonConvert.DeserializeObject<OAuth2MetadataResponse>(metadataResponse.Content!)!;
+
+            await WebhookLogger.LogAsync(new
+            {
+                metadata,
+                metadataResponse.Content
+            });
+
+            return new Dictionary<string, string>
+                { { CredNames.AccessToken, tokenResponse.AccessToken }, { CredNames.ServerPrefix, metadata.Dc } };
+        }
+        catch (Exception e)
         {
-            metadata,
-            metadataResponse.Content
-        });
-
-        return new Dictionary<string, string>
-            { { CredNames.AccessToken, tokenResponse.AccessToken }, { CredNames.ServerPrefix, metadata.Dc } };
+            await WebhookLogger.LogAsync(e);
+            throw;
+        }
     }
 
     public Task RevokeToken(Dictionary<string, string> values)
