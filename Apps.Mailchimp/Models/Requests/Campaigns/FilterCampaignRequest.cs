@@ -32,4 +32,13 @@ public class FilterCampaignRequest
 
     [Display("Member ID")] 
     public string? MemberId { get; set; }
+
+    [DefinitionIgnore]
+    public int? Count { get; set; }
+    
+    [DefinitionIgnore] 
+    public string? SortField { get; set; }
+    
+    [DefinitionIgnore]
+    public string? SortDirection { get; set; }
 }
