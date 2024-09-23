@@ -12,7 +12,7 @@ public class ErrorDto
     
     public string Instance { get; set; } = default!;
 
-    public List<FieldDto> Errors { get; set; }
+    public List<FieldDto> Errors { get; set; } = new();
     
     public override string ToString()
     {

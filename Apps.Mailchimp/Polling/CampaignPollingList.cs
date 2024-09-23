@@ -33,7 +33,7 @@ public class CampaignPollingList(InvocationContext invocationContext) : AppInvoc
 
         var campaigns = await GetCampaigns(new FilterCampaignRequest
             { SinceCreateTime = request.Memory.LastInteractionDate });
-        
+
         return new()
         {
             FlyBird = campaigns.Items.Any(),
@@ -75,12 +75,13 @@ public class CampaignPollingList(InvocationContext invocationContext) : AppInvoc
             }
 
             var updatedCampaigns = campaignsToUpdate
-                .Where(x => request.Memory.Entities.Any(y =>
-                    x.CampaignId == y.CampaignId))
-                .Where(x => request.Memory.Entities.Any(y => x.HtmlContentHash != y.HtmlContentHash));
+                .Where(newCampaign => request.Memory.Entities
+                    .Any(oldCampaign => newCampaign.CampaignId == oldCampaign.CampaignId &&
+                                        newCampaign.HtmlContentHash != oldCampaign.HtmlContentHash))
+                .ToList();
 
             var campaignsToReturn = campaigns.Items
-                .Where(x => updatedCampaigns.Any(y => y.CampaignId == x.Id))
+                .Where(campaign => updatedCampaigns.Any(updated => updated.CampaignId == campaign.Id))
                 .ToList();
 
             await WebhookLogger.LogAsync(new
@@ -127,10 +128,13 @@ public class CampaignPollingList(InvocationContext invocationContext) : AppInvoc
             var request = new ApiRequest(requestUrl, Method.Get, Creds);
             var content = await Client.ExecuteWithErrorHandling<CampaignContentResponse>(request);
 
+            var hashableContent = content.Html == null && content.PlainText == null
+                ? string.Empty
+                : $"{content.PlainText} {content.Html}";
             entities.Add(new()
             {
                 CampaignId = campaign.Id,
-                HtmlContentHash = HashHelper.ConvertStringToHash(content.Html ?? string.Empty)
+                HtmlContentHash = HashHelper.ConvertStringToHash(hashableContent)
             });
         }
 

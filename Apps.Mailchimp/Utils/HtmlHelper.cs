@@ -7,6 +7,11 @@ public static class HtmlHelper
 {
     public static MemoryStream CampaignContentResponseToHtmlStream(CampaignContentResponse campaignContent, string campaignId)
     {
+        if(campaignContent.Html is null)
+        {
+            throw new Exception($"Html content of campaign (ID: {campaignId}) cannot be null");
+        }
+        
         var htmlStream = new MemoryStream();
         var writer = new StreamWriter(htmlStream);
 

@@ -6,5 +6,5 @@ namespace Apps.Mailchimp.Models.Responses.Folders;
 public class FoldersResponse : BaseSearchResponse<FolderResponse>
 {
     [Display("Folders"), JsonProperty("folders")]
-    public override List<FolderResponse> Items { get; set; }
+    public override List<FolderResponse> Items { get; set; } = new();
 }
