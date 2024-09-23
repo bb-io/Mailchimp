@@ -19,6 +19,12 @@ public class CampaignPollingList(InvocationContext invocationContext) : AppInvoc
     public async Task<PollingEventResponse<DateMemory, CampaignsResponse>> OnCampaignsCreated(
         PollingEventRequest<DateMemory> request)
     {
+        await WebhookLogger.LogAsync(new
+        {
+            Message = "Polling campaigns created",
+            request.Memory
+        });
+        
         if (request.Memory is null)
         {
             return new()
@@ -33,6 +39,14 @@ public class CampaignPollingList(InvocationContext invocationContext) : AppInvoc
 
         var campaigns = await GetCampaigns(new FilterCampaignRequest
             { SinceCreateTime = request.Memory.LastInteractionDate });
+        
+        await WebhookLogger.LogAsync(new
+        {
+            Message = "Polling campaigns",
+            campaigns,
+            request.Memory.LastInteractionDate
+        });
+        
         return new()
         {
             FlyBird = campaigns.Items.Any(),
