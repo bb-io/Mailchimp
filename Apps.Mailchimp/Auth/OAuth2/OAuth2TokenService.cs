@@ -3,7 +3,6 @@ using Apps.Mailchimp.Constants;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Authentication.OAuth2;
 using Blackbird.Applications.Sdk.Common.Invocation;
-using Blackbird.Applications.Sdk.Utils.Extensions.Http;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -44,7 +43,7 @@ public class OAuth2TokenService(InvocationContext invocationContext)
                 .AddParameter("grant_type", "authorization_code")
                 .AddParameter("client_id", ApplicationConstants.ClientId)
                 .AddParameter("client_secret", ApplicationConstants.ClientSecret)
-                .AddParameter("redirect_uri", InvocationContext.UriInfo.ImplicitGrantRedirectUri.ToString())
+                .AddParameter("redirect_uri", InvocationContext.UriInfo.AuthorizationCodeRedirectUri.ToString())
                 .AddParameter("code", code);
 
             var client = new RestClient();
