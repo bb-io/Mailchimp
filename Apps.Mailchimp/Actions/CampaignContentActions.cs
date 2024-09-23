@@ -26,7 +26,7 @@ public class CampaignContentActions(InvocationContext invocationContext, IFileMa
     }
     
     [Action("Update campaign content from HTML", Description = "Update content of campaign by specified ID from HTML file")]
-    public async Task<CampaignContentResponse> UpdateCampaignContentAsync([ActionParameter] UpdateCampaignContentFromHtmlRequest updateRequest)
+    public async Task<CampaignContentResponse> UpdateCampaignContentFromHtmlAsync([ActionParameter] UpdateCampaignContentFromHtmlRequest updateRequest)
     {
         var stream = await fileManagementClient.DownloadAsync(updateRequest.File);
         var bytes = await stream.GetByteData();
