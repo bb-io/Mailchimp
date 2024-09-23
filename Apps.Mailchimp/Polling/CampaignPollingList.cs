@@ -15,7 +15,7 @@ namespace Apps.Mailchimp.Polling;
 [PollingEventList]
 public class CampaignPollingList(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
-    [PollingEvent("On campaigns created", "Triggered when new campaigns are created")]
+    [PollingEvent("On campaigns created", "Polling event. Triggered after specified time interval and returns new campaigns")]
     public async Task<PollingEventResponse<DateMemory, CampaignsResponse>> OnCampaignsCreated(
         PollingEventRequest<DateMemory> request)
     {
@@ -45,71 +45,48 @@ public class CampaignPollingList(InvocationContext invocationContext) : AppInvoc
         };
     }
 
-    [PollingEvent("On campaigns updated", "Triggered when campaigns are updated")]
+    [PollingEvent("On campaigns updated", "Polling event. Triggered after specified time interval and returns updated campaigns")]
     public async Task<PollingEventResponse<UpdateMemory, CampaignsResponse>> OnCampaignsUpdated(
         PollingEventRequest<UpdateMemory> request)
     {
-        try
+        var campaigns = await GetCampaigns(new() { Count = 20, SortField = "create_time", SortDirection = "DESC" });
+        var campaignsToUpdate = await GetCampaignsToUpdate(campaigns.Items);
+        
+        if (request.Memory is null)
         {
-            var campaigns = await GetCampaigns(new() { Count = 20, SortField = "create_time", SortDirection = "DESC" });
-            var campaignsToUpdate = await GetCampaignsToUpdate(campaigns.Items);
-
-            await WebhookLogger.LogAsync(new
-            {
-                Message = "Polling campaigns to update",
-                campaigns,
-                campaignsToUpdate,
-                request.Memory
-            });
-
-            if (request.Memory is null)
-            {
-                return new()
-                {
-                    FlyBird = false,
-                    Memory = new()
-                    {
-                        Entities = campaignsToUpdate
-                    }
-                };
-            }
-
-            var updatedCampaigns = campaignsToUpdate
-                .Where(newCampaign => request.Memory.Entities
-                    .Any(oldCampaign => newCampaign.CampaignId == oldCampaign.CampaignId &&
-                                        newCampaign.HtmlContentHash != oldCampaign.HtmlContentHash))
-                .ToList();
-
-            var campaignsToReturn = campaigns.Items
-                .Where(campaign => updatedCampaigns.Any(updated => updated.CampaignId == campaign.Id))
-                .ToList();
-
-            await WebhookLogger.LogAsync(new
-            {
-                Message = "Updated campaigns",
-                updatedCampaigns,
-                campaignsToReturn
-            });
-
             return new()
             {
-                FlyBird = campaignsToReturn.Any(),
-                Result = new()
-                {
-                    Items = campaignsToReturn,
-                    TotalItems = campaignsToReturn.Count
-                },
+                FlyBird = false,
                 Memory = new()
                 {
                     Entities = campaignsToUpdate
                 }
             };
         }
-        catch (Exception e)
+
+        var updatedCampaigns = campaignsToUpdate
+            .Where(newCampaign => request.Memory.Entities
+                .Any(oldCampaign => newCampaign.CampaignId == oldCampaign.CampaignId &&
+                                    newCampaign.HtmlContentHash != oldCampaign.HtmlContentHash))
+            .ToList();
+
+        var campaignsToReturn = campaigns.Items
+            .Where(campaign => updatedCampaigns.Any(updated => updated.CampaignId == campaign.Id))
+            .ToList();
+        
+        return new()
         {
-            await WebhookLogger.LogAsync(e);
-            throw;
-        }
+            FlyBird = campaignsToReturn.Any(),
+            Result = new()
+            {
+                Items = campaignsToReturn,
+                TotalItems = campaignsToReturn.Count
+            },
+            Memory = new()
+            {
+                Entities = campaignsToUpdate
+            }
+        };
     }
 
     private async Task<CampaignsResponse> GetCampaigns(FilterCampaignRequest filterRequest)
