@@ -14,10 +14,7 @@ public class CampaignDataSource(InvocationContext invocationContext) : AppInvoca
         var campaigns = await actions.SearchCampaignsAsync(new());
         
         return campaigns.Items
-            .Where(x => context.SearchString == null || BuildReadableName(x).Contains(context.SearchString))
-            .ToDictionary(x => x.Id, BuildReadableName);
+            .Where(x => context.SearchString == null || x.Settings.Title.Contains(context.SearchString))
+            .ToDictionary(x => x.Id, v => v.Settings.Title);
     }
-    
-    private string BuildReadableName(CampaignResponse response) =>
-        $"{response.Id} [Status: {response.Status}] [Type: {response.CampaignType}]";
 }

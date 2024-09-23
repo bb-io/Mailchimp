@@ -43,4 +43,13 @@ public class CampaignResponse
     
     [Display("Resendable")]
     public bool Resendable { get; set; }
+    
+    [Display("Settings")] 
+    public CampaignSettingsResponse Settings { get; set; } = default!;
+    
+    [Display("Tracking")]
+    public CampaignTrackingResponse Tracking { get; set; } = default!;
+    
+    [Display("Recipients")]
+    public CampaignRecipientsResponse Recipients { get; set; } = default!;
 }

@@ -11,9 +11,24 @@ public class ErrorDto
     public string Detail { get; set; } = default!;
     
     public string Instance { get; set; } = default!;
+
+    public List<FieldDto> Errors { get; set; }
     
     public override string ToString()
     {
-        return $"Type: {Type}, Title: {Title}, Status: {Status}, Detail: {Detail}, Instance: {Instance}";
+        var message = $"Type: {Type}, Title: {Title}, Status: {Status}, Detail: {Detail}, Instance: {Instance}";
+        if (Errors.Any())
+        {
+            message += $", Errors: {string.Join(", ", Errors.Select(x => $"Field: {x.Field}, Message: {x.Message}"))}";
+        }
+        
+        return message;
     }
+}
+
+public class FieldDto
+{
+    public string Field { get; set; } = default!;
+    
+    public string Message { get; set; } = default!;
 }
