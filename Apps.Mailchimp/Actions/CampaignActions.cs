@@ -224,7 +224,7 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
 
             if (createRequest.TemplateId != null)
             {
-                settings.Add("template_id", createRequest.TemplateId);
+                settings.Add("template_id", Convert.ToInt32(createRequest.TemplateId));
             }
 
             if (createRequest.DragAndDrop != null)

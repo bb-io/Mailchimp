@@ -66,7 +66,7 @@ public class CreateCampaignRequest
 
     // Recipients
     
-    [Display("Recipients", Description = "The list ID of the list to send this campaign to."), DataSource(typeof(ListDataSource))]
+    [Display("Recipient ID", Description = "The list ID of the list to send this campaign to."), DataSource(typeof(ListDataSource))]
     public string? ListId { get; set; } = default!;
     
     // Tracking
@@ -123,7 +123,7 @@ public class CreateCampaignRequest
     [Display("Description", Description = "The description for the card.")]
     public string? Description { get; set; }
     
-    [Display("Title", Description = "The title for the card.")]
+    [Display("Social card title", Description = "The title for the card.")]
     public string? SocialTitle { get; set; }
     
     // Rss options
