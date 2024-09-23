@@ -25,9 +25,9 @@ public static class HtmlHelper
         var bytes = await stream.GetByteData();
         var html = System.Text.Encoding.UTF8.GetString(bytes);
 
-        var campaignId = string.Empty;
-        var metaTagPattern = "<meta name=\"blackbird-campaign-id\" content=\"(.*?)\">";
-        var match = System.Text.RegularExpressions.Regex.Match(html, metaTagPattern);
+        string? campaignId = null;
+        var metaTagPattern = @"<meta\s+name\s*=\s*""blackbird-campaign-id""\s+content\s*=\s*""(.*?)""\s*/?>";
+        var match = System.Text.RegularExpressions.Regex.Match(html, metaTagPattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
         if (match.Success)
         {
