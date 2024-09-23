@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Product>Mailchimp</Product>
+        <Product>Mailchimp [Beta]</Product>
         <Description>Mailchimp offers powerful features to drive revenue and grow your business. Create and optimize emails, landing pages, websites, and more with integrations, AI tools, and reporting.</Description>
         <Version>1.0.0</Version>
         <PackageId>Apps.Mailchimp</PackageId>

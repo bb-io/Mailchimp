@@ -47,7 +47,7 @@ You must ensure that you have a Mailchimp account and access to it. Our app uses
 
 ## Missing features
 
-**Mailchimp** API is very extensive and we are working on adding more features to our app. If you need a specific feature, please reach out to us.
+**Mailchimp** API is very extensive and we are working on adding more features to our app. If you need a specific feature, please reach out to us. You can check API endpoints and available features in the [Mailchimp API documentation](https://mailchimp.com/developer/marketing/api/root/).
 
 ## Feedback
 
