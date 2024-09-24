@@ -2,10 +2,11 @@
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Authentication.OAuth2;
 using Blackbird.Applications.Sdk.Common.Invocation;
+using Blackbird.Applications.Sdk.Common.Metadata;
 
 namespace Apps.Mailchimp;
 
-public class Application : BaseInvocable, IApplication
+public class Application : BaseInvocable, IApplication, ICategoryProvider
 {
     private readonly Dictionary<Type, object> _typesInstances;
 
@@ -37,5 +38,11 @@ public class Application : BaseInvocable, IApplication
             { typeof(IOAuth2AuthorizeService), new OAuth2AuthorizeService(InvocationContext) },
             { typeof(IOAuth2TokenService), new OAuth2TokenService(InvocationContext) }
         };
+    }
+
+    public IEnumerable<ApplicationCategory> Categories
+    {
+        get => new [] { ApplicationCategory.Marketing, ApplicationCategory.Communication };
+        set { }
     }
 }
