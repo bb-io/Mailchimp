@@ -42,8 +42,38 @@ You must ensure that you have a Mailchimp account and access to it. Our app uses
 
 ## Events
 
-- **On campaigns created** - Polling event. Triggered after specified time interval and returns new campaigns.
-- **On campaigns updated** - Polling event. Triggered after specified time interval and returns updated campaigns.
+- **On campaigns created** - Polling event. Triggered after specified time interval and returns new campaigns. This event uses the `since_create_time` query parameter to filter campaigns created after the specified time.
+- **On campaigns updated** - Polling event. Triggered after specified time interval and returns updated campaigns. This event stores latest 20 campaigns and their hash values (of HTML content) in the memory. When the event is triggered, it compares the hash values of the stored campaigns with the hash values of the latest campaigns. If the hash values are different, the event returns the updated campaigns. The key moment here is getting only 20 campaigns sorted by the `create_time` in descending order. This is done to avoid complexity and performance issues.
+
+## Error handling
+
+Our app returns errors in a structured format. Below are the typical error responses you might encounter:
+
+1. Standard Error Response
+   A standard error response includes the following fields:
+```
+Type: {Type}, Title: {Title}, Status: {Status}, Detail: {Detail}, Instance: {Instance}
+```
+
+- Type: The type of error.
+- Title: A brief title describing the error.
+- Status: The HTTP status code associated with the error.
+- Detail: A detailed message explaining the error.
+- Instance: A unique identifier for this specific error instance.
+
+2. Complex Error Response with Inner Errors
+
+If the error object contains additional inner errors, the response will include an Errors field with more details:
+
+```
+Type: {Type}, Title: {Title}, Status: {Status}, Detail: {Detail}, Instance: {Instance}, Errors: Field: {x.Field}, Message: {x.Message}, ...
+```
+
+- Errors: A list of inner errors, each containing:
+  - Field: The specific field related to the error. E.g., `first_name`.
+  - Message: A message describing the error for that field.
+
+If you encounter an error, please check the error message and try to resolve the issue. If you need further assistance, please contact us.
 
 ## Missing features
 
