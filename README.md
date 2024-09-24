@@ -1,12 +1,83 @@
-# Blackbird.io {{App name}}
+# Blackbird.io Mailchimp
 
 Blackbird is the new automation backbone for the language technology industry. Blackbird provides enterprise-scale automation and orchestration with a simple no-code/low-code platform. Blackbird enables ambitious organizations to identify, vet and automate as many processes as possible. Not just localization workflows, but any business and IT process. This repository represents an application that is deployable on Blackbird and usable inside the workflow editor.
 
 ## Introduction
 
+Mailchimp offers powerful features to drive revenue and grow your business. Create and optimize emails, landing pages, websites, and more with integrations, AI tools, and reporting.
+
 <!-- begin docs -->
 
-Documentation coming soon.
+## Before setting up
+
+You must ensure that you have a Mailchimp account and access to it. Our app uses OAuth 2.0 for authentication, so you don't need to provide any API keys. You will be redirected to the Mailchimp login page to authorize the app.
+
+## Connecting
+
+1. Navigate to Apps, and identify the **Mailchimp** app. You can use search to find it.
+2. Click _Add Connection_.
+3. Name your connection for future reference e.g. 'My organization'.
+4. Click _Authorize connection_.
+5. You will be redirected to the Mailchimp login page. Enter your credentials and authorize the app.
+6. Confirm that the connection has appeared and the status is _Connected_.
+
+![Connection](image/README/connection.png)
+
+## Actions
+
+### Campaigns
+
+- **Search campaigns** - Search campaigns by specified criteria.
+- **Get campaign** - Get campaign by specified ID.
+- **Create campaign** - Create campaign with specified data.
+- **Update campaign** - Update campaign with specified data.
+- **Delete campaign** - Delete campaign by specified ID.
+
+### Campaign content
+
+- **Get campaign content** - Get campaign content by specified ID.
+- **Update campaign content** - Update campaign content with specified data.
+- **Get campaign content as HTML** - Get campaign content by specified ID as HTML.
+- **Update campaign content from HTML** - Update campaign content with specified ID from HTML file or optional input. This action is useful in pair with the `Get campaign content as HTML` action when you need to get the campaign content as HTML and then translate the document.
+
+## Events
+
+- **On campaigns created** - Polling event. Triggered after specified time interval and returns new campaigns. This event uses the `since_create_time` query parameter to filter campaigns created after the specified time.
+- **On campaigns updated** - Polling event. Triggered after specified time interval and returns updated campaigns. This event stores latest 20 campaigns and their hash values (of HTML content) in the memory. When the event is triggered, it compares the hash values of the stored campaigns with the hash values of the latest campaigns. If the hash values are different, the event returns the updated campaigns. The key moment here is getting only 20 campaigns sorted by the `create_time` in descending order. This is done to avoid complexity and performance issues.
+
+## Error handling
+
+Our app returns errors in a structured format. Below are the typical error responses you might encounter:
+
+1. Standard Error Response
+   A standard error response includes the following fields:
+```
+Type: {Type}, Title: {Title}, Status: {Status}, Detail: {Detail}, Instance: {Instance}
+```
+
+- Type: The type of error.
+- Title: A brief title describing the error.
+- Status: The HTTP status code associated with the error.
+- Detail: A detailed message explaining the error.
+- Instance: A unique identifier for this specific error instance.
+
+2. Complex Error Response with Inner Errors
+
+If the error object contains additional inner errors, the response will include an Errors field with more details:
+
+```
+Type: {Type}, Title: {Title}, Status: {Status}, Detail: {Detail}, Instance: {Instance}, Errors: Field: {x.Field}, Message: {x.Message}, ...
+```
+
+- Errors: A list of inner errors, each containing:
+  - Field: The specific field related to the error. E.g., `first_name`.
+  - Message: A message describing the error for that field.
+
+If you encounter an error, please check the error message and try to resolve the issue. If you need further assistance, please contact us.
+
+## Missing features
+
+**Mailchimp** API is very extensive and we are working on adding more features to our app. If you need a specific feature, please reach out to us. You can check API endpoints and available features in the [Mailchimp API documentation](https://mailchimp.com/developer/marketing/api/root/).
 
 ## Feedback
 
