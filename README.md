@@ -4,13 +4,13 @@ Blackbird is the new automation backbone for the language technology industry. B
 
 ## Introduction
 
-Mailchimp offers powerful features to drive revenue and grow your business. Create and optimize emails, landing pages, websites, and more with integrations, AI tools, and reporting.
+Mailchimp offers powerful features designed to help you drive revenue and grow your business. With seamless integrations, AI tools, and comprehensive reporting, you can easily create and optimize emails, landing pages, websites, and more. 
 
 <!-- begin docs -->
 
 ## Before setting up
 
-You must ensure that you have a Mailchimp account and access to it. Our app uses OAuth 2.0 for authentication, so you don't need to provide any API keys. You will be redirected to the Mailchimp login page to authorize the app.
+You must ensure that you have a Mailchimp account and access to it. Our app uses OAuth 2.0 for authentication, so you don't need to provide any API keys. You will be redirected to the Mailchimp login page to authorize the app. Note, this app leverages the [Mailchimp Marketing API](https://mailchimp.com/developer/marketing/api) to provide a streamlined experience for managing your marketing efforts.
 
 ## Connecting
 
