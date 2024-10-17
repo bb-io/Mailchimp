@@ -276,9 +276,29 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
 
             requestBody.Add("tracking", tracking);
         }
-        
-        var json = JsonConvert.SerializeObject(requestBody, Formatting.Indented);
 
+        if (createRequest.ShouldCreateSocialCard())
+        {
+            var socialCard = new Dictionary<string, object>();
+
+            if (createRequest.ImageUrl != null)
+            {
+                socialCard.Add("image_url", createRequest.ImageUrl);
+            }
+
+            if (createRequest.Description != null)
+            {
+                socialCard.Add("description", createRequest.Description);
+            }
+
+            if (createRequest.SocialTitle != null)
+            {
+                socialCard.Add("title", createRequest.SocialTitle);
+            }
+
+            requestBody.Add("social_card", socialCard);
+        }
+        
         var request = new ApiRequest(requestUrl, Method.Post, Creds)
             .WithJsonBody(requestBody);
 
