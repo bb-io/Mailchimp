@@ -33,12 +33,12 @@ public class FilterCampaignRequest
     [Display("Member ID")] 
     public string? MemberId { get; set; }
 
-    [DefinitionIgnore]
+    [Display("Count", Description = "Number of items to return. Minimum is 10. Maximum is 1000. Default is 100.")]
     public int? Count { get; set; }
     
-    [DefinitionIgnore] 
+    [Display("Sort field"), StaticDataSource(typeof(SortFieldDataSource))] 
     public string? SortField { get; set; }
     
-    [DefinitionIgnore]
+    [Display("Sort direction"), StaticDataSource(typeof(SortDirectionDataSource))]
     public string? SortDirection { get; set; }
 }

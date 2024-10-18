@@ -34,7 +34,7 @@ public class CreateCampaignRequest
     [Display("Use conversation", Description = "Use Mailchimp Conversation feature to manage out-of-office replies.")] 
     public bool? UseConversation { get; set; }
 
-    [Display("To name", Description = "Use Mailchimp Conversation feature to manage out-of-office replies.")] 
+    [Display("To name", Description = "The campaign's custom 'To' name. Typically the first name audience field.")] 
     public string? ToName { get; set; }
 
     [Display("Folder ID", Description = "If the campaign is listed in a folder, the id for that folder."), DataSource(typeof(FolderDataSource))] 
@@ -101,7 +101,7 @@ public class CreateCampaignRequest
     public int? TestSize { get; set; }
     
     [Display("Subject lines", Description = "The possible subject lines to test. If no subject lines are provided, settings.subject_line will be used.")]
-    public Dictionary<string, string>? SubjectLines { get; set; }
+    public IEnumerable<string>? SubjectLines { get; set; }
     
     [Display("Send times", Description = "The possible send times to test. The times provided should be in the format YYYY-MM-DD HH:MM:SS. If send_times are provided to test, the test_size will be set to 100% and winner_criteria will be ignored.")]
     public IEnumerable<DateTime>? SendTimes { get; set; }
