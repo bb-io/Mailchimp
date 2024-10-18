@@ -8,8 +8,8 @@ namespace Apps.Mailchimp.Actions;
 [ActionList]
 public class DebugActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
-    [Action("[DEBUG] Get access token", Description = "Get the access token for the Mailchimp API. Can be used to test the connection.")]
-    public List<AuthenticationCredentialsProvider> GetAccessToken()
+    [Action("[DEBUG] Get credential providers", Description = "Debug action.")]
+    public List<AuthenticationCredentialsProvider> GetCredentialProviders()
     {
         return Creds.ToList();
     }

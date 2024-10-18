@@ -23,15 +23,21 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
         requestUrl = BuildQueryString(requestUrl, filterRequest);
 
         var allCampaigns = new List<CampaignResponse>();
-        int offset = 0;
-        int count = 100;
+        var offset = 0;
+        var count = 100;
 
         CampaignsResponse response;
-        do
+        
+        if(filterRequest.Count.HasValue)
         {
+            if(filterRequest.Count < 10 || filterRequest.Count > 1000)
+            {
+                throw new InvalidOperationException("Count must be between 10 and 1000");
+            }
+            
             var paginatedUrl = QueryHelpers.AddQueryString(requestUrl, new Dictionary<string, string?>
             {
-                { "offset", offset.ToString() },
+                { "offset", 0.ToString() },
                 { "count", count.ToString() }
             });
 
@@ -42,10 +48,29 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
             {
                 allCampaigns.AddRange(response.Items);
             }
+        }
+        else
+        {
+            do
+            {
+                var paginatedUrl = QueryHelpers.AddQueryString(requestUrl, new Dictionary<string, string?>
+                {
+                    { "offset", offset.ToString() },
+                    { "count", count.ToString() }
+                });
 
-            offset += count;
-        } while (response.Items.Count == count);
+                var request = new ApiRequest(paginatedUrl, Method.Get, Creds);
+                response = await Client.ExecuteWithErrorHandling<CampaignsResponse>(request);
 
+                if (response.Items.Any())
+                {
+                    allCampaigns.AddRange(response.Items);
+                }
+
+                offset += count;
+            } while (response.Items.Count == count);
+        }
+        
         return new()
         {
             Items = allCampaigns,
@@ -388,12 +413,7 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
 
             if (updateRequest.TemplateId != null)
             {
-                settings.Add("template_id", updateRequest.TemplateId);
-            }
-
-            if (updateRequest.DragAndDrop != null)
-            {
-                settings.Add("drag_and_drop", updateRequest.DragAndDrop);
+                settings.Add("template_id", Convert.ToInt32(updateRequest.TemplateId));
             }
 
             requestBody.Add("settings", settings);
@@ -472,7 +492,9 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
             { "since_create_time", request.SinceCreateTime?.ToString("yyyy-MM-ddTHH:mm:ss") },
             { "list_id", request.ListId },
             { "folder_id", request.FolderId },
-            { "member_id", request.MemberId }
+            { "member_id", request.MemberId },
+            { "sort_field", request.SortField }, 
+            { "sort_dir", request.SortDirection }
         };
 
         return QueryHelpers.AddQueryString(url, dictionary);

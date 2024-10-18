@@ -18,14 +18,14 @@ public class CampaignContentResponse
     
     public void InitializeFromVariateContents()
     {
-        if (string.IsNullOrEmpty(PlainText) && VariateContents.Count == 0)
+        if (string.IsNullOrEmpty(PlainText) && VariateContents.Count > 0)
         {
-            PlainText = VariateContents[0].PlainText;
+            PlainText = VariateContents.Last().PlainText;
         }
         
-        if (string.IsNullOrEmpty(Html) && VariateContents.Count == 0)
+        if (string.IsNullOrEmpty(Html) && VariateContents.Count > 0)
         {
-            Html = VariateContents[0].Html;
+            Html = VariateContents.Last().Html;
         }
     }
 }

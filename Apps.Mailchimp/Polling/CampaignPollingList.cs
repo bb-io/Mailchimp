@@ -104,6 +104,7 @@ public class CampaignPollingList(InvocationContext invocationContext) : AppInvoc
             var requestUrl = $"/campaigns/{campaign.Id}/content";
             var request = new ApiRequest(requestUrl, Method.Get, Creds);
             var content = await Client.ExecuteWithErrorHandling<CampaignContentResponse>(request);
+            content.InitializeFromVariateContents();
 
             var hashableContent = content.Html == null && content.PlainText == null
                 ? string.Empty

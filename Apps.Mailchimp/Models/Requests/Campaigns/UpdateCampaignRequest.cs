@@ -1,5 +1,7 @@
-﻿using Apps.Mailchimp.Models.Identifiers;
+﻿using Apps.Mailchimp.DataSources;
+using Apps.Mailchimp.Models.Identifiers;
 using Blackbird.Applications.Sdk.Common;
+using Blackbird.Applications.Sdk.Common.Dynamic;
 
 namespace Apps.Mailchimp.Models.Requests.Campaigns;
 
@@ -25,10 +27,10 @@ public class UpdateCampaignRequest : CampaignIdentifier
     [Display("Use conversation", Description = "Use Mailchimp Conversation feature to manage out-of-office replies.")] 
     public bool? UseConversation { get; set; }
 
-    [Display("To name", Description = "Use Mailchimp Conversation feature to manage out-of-office replies.")] 
+    [Display("To name", Description = "The campaign's custom 'To' name. Typically the first name audience field.")] 
     public string? ToName { get; set; }
 
-    [Display("Folder ID", Description = "If the campaign is listed in a folder, the id for that folder.")] 
+    [Display("Folder ID", Description = "If the campaign is listed in a folder, the id for that folder."), DataSource(typeof(FolderDataSource))] 
     public string? FolderId { get; set; }
 
     [Display("Authenticate", Description = "Whether Mailchimp authenticated the campaign. Defaults to true.")] 
@@ -49,11 +51,8 @@ public class UpdateCampaignRequest : CampaignIdentifier
     [Display("Timewarp", Description = "Schedule the campaign based on the recipient's timezone.")] 
     public bool? Timewarp { get; set; }
 
-    [Display("Template ID", Description = "The id of the template to use.")] 
+    [Display("Template ID", Description = "The id of the template to use."), DataSource(typeof(TemplateDataSource))] 
     public string? TemplateId { get; set; }
-
-    [Display("Drag and drop", Description = "Whether to enable the drag-and-drop editor. Defaults to false.")] 
-    public bool? DragAndDrop { get; set; }
     
     // Tracking: 
 
@@ -83,7 +82,7 @@ public class UpdateCampaignRequest : CampaignIdentifier
         return SubjectLine != null || PreviewText != null || Title != null || FromName != null || ReplyTo != null ||
                UseConversation != null || ToName != null || FolderId != null || Authenticate != null ||
                AutoFooter != null || InlineCss != null || AutoTweet != null || FbComments != null || Timewarp != null ||
-               TemplateId != null || DragAndDrop != null;
+               TemplateId != null;
     }
     
     public bool ShouldUpdateTracking()
