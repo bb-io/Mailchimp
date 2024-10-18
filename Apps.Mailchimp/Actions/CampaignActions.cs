@@ -100,7 +100,7 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
 
             if (createRequest.SubjectLines != null)
             {
-                variateSettings.Add("subject_lines", createRequest.SubjectLines);
+                variateSettings.Add("subject_lines", createRequest.SubjectLines.ToList());
             }
             
             if (createRequest.SendTimes != null)

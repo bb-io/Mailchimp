@@ -48,7 +48,10 @@ public class CampaignContentActions(InvocationContext invocationContext, IFileMa
     {
         var requestUrl = $"/campaigns/{identifier.CampaignId}/content";
         var request = new ApiRequest(requestUrl, Method.Get, Creds);
-        return await Client.ExecuteWithErrorHandling<CampaignContentResponse>(request);
+        var response = await Client.ExecuteWithErrorHandling<CampaignContentResponse>(request);
+        response.InitializeFromVariateContents();
+        
+        return response;
     }
 
     [Action("Update campaign content", Description = "Update content of campaign by specified ID")]

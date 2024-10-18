@@ -52,4 +52,13 @@ public class CampaignResponse
     
     [Display("Recipients")]
     public CampaignRecipientsResponse Recipients { get; set; } = default!;
+
+    [Display("Social card")]
+    public SocialCardResponse SocialCard { get; set; } = default!;
+
+    [Display("Variate settings")]
+    public VariateSettingsResponse VariateSettings { get; set; } = default!;
+    
+    [Display("RSS options")]
+    public RssOptsResponse RssOpts { get; set; } = default!;
 }

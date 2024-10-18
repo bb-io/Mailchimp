@@ -4,7 +4,7 @@ namespace Apps.Mailchimp.Models.Responses.Campaigns.Content;
 
 public class CampaignContentResponse
 {
-    [DefinitionIgnore]
+    [Display("Variate contents")]
     public List<VariateContentResponse> VariateContents { get; set; } = new();
   
     [Display("Plain text")]
@@ -15,4 +15,17 @@ public class CampaignContentResponse
 
     [Display("Archive HTML")]
     public string? ArchiveHtml { get; set; } = default!;
+    
+    public void InitializeFromVariateContents()
+    {
+        if (string.IsNullOrEmpty(PlainText) && VariateContents.Count == 0)
+        {
+            PlainText = VariateContents[0].PlainText;
+        }
+        
+        if (string.IsNullOrEmpty(Html) && VariateContents.Count == 0)
+        {
+            Html = VariateContents[0].Html;
+        }
+    }
 }

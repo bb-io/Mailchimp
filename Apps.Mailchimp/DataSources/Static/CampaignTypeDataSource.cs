@@ -10,7 +10,6 @@ public class CampaignTypeDataSource : IStaticDataSourceHandler
         {
             { "regular", "Regular" },
             { "plaintext", "Plain Text" },
-            { "absplit", "A/B Split" },
             { "rss", "RSS" },
             { "variate", "Variate" }
         };
