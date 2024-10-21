@@ -38,7 +38,7 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
             var paginatedUrl = QueryHelpers.AddQueryString(requestUrl, new Dictionary<string, string?>
             {
                 { "offset", 0.ToString() },
-                { "count", count.ToString() }
+                { "count", filterRequest.Count.ToString() }
             });
 
             var request = new ApiRequest(paginatedUrl, Method.Get, Creds);
