@@ -33,7 +33,7 @@ public class FilterCampaignRequest
     [Display("Member ID")] 
     public string? MemberId { get; set; }
 
-    [Display("Count", Description = "Number of items to return. Minimum is 10. Maximum is 1000. Default is 100.")]
+    [Display("Count", Description = "The number of records to return. By default we will return all the records. Maximum value is 1000")]
     public int? Count { get; set; }
     
     [Display("Sort field"), StaticDataSource(typeof(SortFieldDataSource))] 

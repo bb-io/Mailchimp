@@ -24,15 +24,14 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
 
         var allCampaigns = new List<CampaignResponse>();
         var offset = 0;
-        var count = 100;
 
         CampaignsResponse response;
         
         if(filterRequest.Count.HasValue)
         {
-            if(filterRequest.Count < 10 || filterRequest.Count > 1000)
+            if(filterRequest.Count > 1000)
             {
-                throw new InvalidOperationException("Count must be between 10 and 1000");
+                throw new InvalidOperationException("Count cannot exceed 1000");
             }
             
             var paginatedUrl = QueryHelpers.AddQueryString(requestUrl, new Dictionary<string, string?>
@@ -51,6 +50,8 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
         }
         else
         {
+            var count = 100;
+
             do
             {
                 var paginatedUrl = QueryHelpers.AddQueryString(requestUrl, new Dictionary<string, string?>
