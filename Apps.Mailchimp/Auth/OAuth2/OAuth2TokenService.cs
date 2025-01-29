@@ -33,7 +33,7 @@ public class OAuth2TokenService(InvocationContext invocationContext)
             .AddParameter("grant_type", "authorization_code")
             .AddParameter("client_id", ApplicationConstants.ClientId)
             .AddParameter("client_secret", ApplicationConstants.ClientSecret)
-            .AddParameter("redirect_uri", InvocationContext.UriInfo.AuthorizationCodeRedirectUri.ToString())
+            .AddParameter("redirect_uri", $"{InvocationContext.UriInfo.BridgeServiceUrl.ToString().TrimEnd('/')}/AuthorizationCode")
             .AddParameter("code", code);
 
         var client = new RestClient();

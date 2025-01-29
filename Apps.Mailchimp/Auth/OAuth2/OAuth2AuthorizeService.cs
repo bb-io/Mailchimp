@@ -10,15 +10,18 @@ public class OAuth2AuthorizeService(InvocationContext invocationContext)
 {
     public string GetAuthorizationUrl(Dictionary<string, string> values)
     {
-        const string oauthUrl = "https://login.mailchimp.com/oauth2/authorize";
+        var bridgeOauthUrl = $"{InvocationContext.UriInfo.BridgeServiceUrl.ToString().TrimEnd('/')}/oauth";
+        
         var parameters = new Dictionary<string, string>
         {
-            { "response_type", "code" },
             { "client_id", ApplicationConstants.ClientId },
-            { "redirect_uri", InvocationContext.UriInfo.AuthorizationCodeRedirectUri.ToString() },
-            { "state", values["state"] }
+            { "redirect_uri", $"{InvocationContext.UriInfo.BridgeServiceUrl.ToString().TrimEnd('/')}/AuthorizationCode" },
+            { "actual_redirect_uri", InvocationContext.UriInfo.AuthorizationCodeRedirectUri.ToString() },
+            { "authorization_url", "https://login.mailchimp.com/oauth2/authorize"},
+            { "state", values["state"] },
+            { "response_type", "code" },
         };
         
-        return QueryHelpers.AddQueryString(oauthUrl, parameters!);
+        return QueryHelpers.AddQueryString(bridgeOauthUrl, parameters!);
     }
 }
