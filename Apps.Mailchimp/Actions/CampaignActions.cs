@@ -5,10 +5,10 @@ using Apps.Mailchimp.Models.Requests.Campaigns;
 using Apps.Mailchimp.Models.Responses.Campaigns;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Utils.Extensions.Http;
 using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json;
 using RestSharp;
 
 namespace Apps.Mailchimp.Actions;
@@ -31,7 +31,7 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
         {
             if(filterRequest.Count > 1000)
             {
-                throw new InvalidOperationException("Count cannot exceed 1000");
+                throw new PluginMisconfigurationException("Count cannot exceed 1000. Please select a value between 1 and 1000.");
             }
             
             var paginatedUrl = QueryHelpers.AddQueryString(requestUrl, new Dictionary<string, string?>
@@ -464,7 +464,7 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
 
         if (requestBody.Count == 0)
         {
-            throw new InvalidOperationException("You must provide at least one field to update");
+            throw new PluginMisconfigurationException("You must provide at least one field to update");
         }
 
         var request = new ApiRequest(requestUrl, Method.Patch, Creds)

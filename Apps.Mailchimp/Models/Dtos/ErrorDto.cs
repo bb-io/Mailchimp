@@ -16,7 +16,7 @@ public class ErrorDto
     
     public override string ToString()
     {
-        var message = $"Type: {Type}, Title: {Title}, Status: {Status}, Detail: {Detail}, Instance: {Instance}";
+        var message = $"Title: {Title}, Status: {Status}, Type: {Type}, Detail: {Detail}, Instance: {Instance}";
         if (Errors.Any())
         {
             message += $", Errors: {string.Join(", ", Errors.Select(x => $"Field: {x.Field}, Message: {x.Message}"))}";

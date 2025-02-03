@@ -6,6 +6,7 @@ using Apps.Mailchimp.Models.Responses.Campaigns.Content;
 using Apps.Mailchimp.Utils;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Common.Files;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
@@ -33,8 +34,8 @@ public class CampaignContentActions(InvocationContext invocationContext, IFileMa
         var stream = await fileManagementClient.DownloadAsync(updateRequest.File);
         var htmlCampaignContent = await HtmlHelper.HtmlStreamToHtmlString(stream);
         var campaignId = updateRequest.CampaignId ?? htmlCampaignContent.CampaignId ??
-            throw new InvalidOperationException(
-                "Could not find campaign ID in HTML file and in the optional input. Specify campaign ID in the input");
+            throw new PluginMisconfigurationException(
+                "Could not find the campaign ID in the HTML file or in the optional input. Please specify the Campaign ID in the optional input.");
         
         return await UpdateCampaignContentAsync(new UpdateCampaignContentRequest
         {

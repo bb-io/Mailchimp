@@ -2,6 +2,7 @@ using Apps.Mailchimp.Constants;
 using Apps.Mailchimp.Models.Dtos;
 using Apps.Mailchimp.Utils;
 using Blackbird.Applications.Sdk.Common.Authentication;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Utils.RestSharp;
 using Newtonsoft.Json;
 using RestSharp;
@@ -16,6 +17,6 @@ public class ApiClient(IEnumerable<AuthenticationCredentialsProvider> authentica
     protected override Exception ConfigureErrorException(RestResponse response)
     {
         var error = JsonConvert.DeserializeObject<ErrorDto>(response.Content!)!;
-        return new Exception(error.ToString());
+        return new PluginApplicationException(error.ToString());
     }
 }
