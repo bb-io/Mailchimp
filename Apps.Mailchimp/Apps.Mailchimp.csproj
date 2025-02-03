@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <Product>Mailchimp</Product>
         <Description>Mailchimp offers powerful features designed to help you drive revenue and grow your business. With seamless integrations, AI tools, and comprehensive reporting, you can easily create and optimize emails, landing pages, websites, and more. This app leverages the Mailchimp Marketing API (https://mailchimp.com/developer/marketing/api) to provide a streamlined experience for managing your marketing efforts.</Description>
-        <Version>1.0.6</Version>
+        <Version>1.0.7</Version>
         <PackageId>Apps.Mailchimp</PackageId>
         <RootNamespace>Apps.Mailchimp</RootNamespace>
         <AssemblyName>Apps.Mailchimp</AssemblyName>
