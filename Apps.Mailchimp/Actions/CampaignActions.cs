@@ -3,6 +3,7 @@ using Apps.Mailchimp.Invocables;
 using Apps.Mailchimp.Models.Identifiers;
 using Apps.Mailchimp.Models.Requests.Campaigns;
 using Apps.Mailchimp.Models.Responses.Campaigns;
+using Apps.Mailchimp.Utils;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
 using Blackbird.Applications.Sdk.Common.Exceptions;
@@ -82,6 +83,8 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
     [Action("Get campaign", Description = "Get campaign by specified ID")]
     public async Task<CampaignResponse> GetCampaignAsync([ActionParameter] CampaignIdentifier identifier)
     {
+        PluginMisconfigurationExceptionHelper.ThrowIfNullOrEmpty(identifier.CampaignId, nameof(identifier.CampaignId));
+
         var requestUrl = $"/campaigns/{identifier}";
         var request = new ApiRequest(requestUrl, Method.Get, Creds);
         return await Client.ExecuteWithErrorHandling<CampaignResponse>(request);
@@ -90,6 +93,8 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
     [Action("Create campaign", Description = "Create a new campaign")]
     public async Task<CampaignResponse> CreateCampaignAsync([ActionParameter] CreateCampaignRequest createRequest)
     {
+        PluginMisconfigurationExceptionHelper.ThrowIfNullOrEmpty(createRequest.CampaignType, nameof(createRequest.CampaignType));
+
         var requestUrl = "/campaigns";
 
         var requestBody = new Dictionary<string, object>
@@ -476,6 +481,8 @@ public class CampaignActions(InvocationContext invocationContext) : AppInvocable
     [Action("Delete campaign", Description = "Delete campaign by specified ID")]
     public async Task DeleteCampaignAsync([ActionParameter] CampaignIdentifier identifier)
     {
+        PluginMisconfigurationExceptionHelper.ThrowIfNullOrEmpty(identifier.CampaignId, nameof(identifier.CampaignId));
+        
         var requestUrl = $"/campaigns/{identifier}";
         var request = new ApiRequest(requestUrl, Method.Delete, Creds);
         await Client.ExecuteWithErrorHandling(request);
