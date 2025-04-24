@@ -21,6 +21,8 @@ public class CampaignContentActions(InvocationContext invocationContext, IFileMa
     [Action("Get campaign content as HTML", Description = "Get content of campaign by specified ID")]
     public async Task<FileReference> GetCampaignContentAsHtmlAsync([ActionParameter] CampaignIdentifier identifier)
     {
+        PluginMisconfigurationExceptionHelper.ThrowIfNullOrEmpty(identifier.CampaignId, nameof(identifier.CampaignId));
+
         var campaignContent = await GetCampaignContentAsync(identifier);
         var memoryStream = HtmlHelper.CampaignContentResponseToHtmlStream(campaignContent, identifier.CampaignId);
         return await fileManagementClient.UploadAsync(memoryStream, "text/html", $"{identifier.CampaignId}.html");
@@ -47,6 +49,8 @@ public class CampaignContentActions(InvocationContext invocationContext, IFileMa
     [Action("Get campaign content", Description = "Get content of campaign by specified ID")]
     public async Task<CampaignContentResponse> GetCampaignContentAsync([ActionParameter] CampaignIdentifier identifier)
     {
+        PluginMisconfigurationExceptionHelper.ThrowIfNullOrEmpty(identifier.CampaignId, nameof(identifier.CampaignId));
+
         var requestUrl = $"/campaigns/{identifier.CampaignId}/content";
         var request = new ApiRequest(requestUrl, Method.Get, Creds);
         var response = await Client.ExecuteWithErrorHandling<CampaignContentResponse>(request);
@@ -59,6 +63,8 @@ public class CampaignContentActions(InvocationContext invocationContext, IFileMa
     public async Task<CampaignContentResponse> UpdateCampaignContentAsync(
         [ActionParameter] UpdateCampaignContentRequest updateRequest)
     {
+        PluginMisconfigurationExceptionHelper.ThrowIfNullOrEmpty(updateRequest.CampaignId, nameof(updateRequest.CampaignId));
+        
         var requestUrl = $"/campaigns/{updateRequest.CampaignId}/content";
         var request = new ApiRequest(requestUrl, Method.Put, Creds)
             .AddJsonBody(new { html = updateRequest.Html });
