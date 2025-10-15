@@ -5,7 +5,7 @@ using Blackbird.Applications.Sdk.Common.Invocation;
 
 namespace Apps.Mailchimp.Actions;
 
-[ActionList]
+[ActionList("Miscellaneous")]
 public class DebugActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
     [Action("[DEBUG] Get credential providers", Description = "Debug action.")]

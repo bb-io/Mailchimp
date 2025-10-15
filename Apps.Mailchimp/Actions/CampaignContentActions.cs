@@ -14,7 +14,7 @@ using RestSharp;
 
 namespace Apps.Mailchimp.Actions;
 
-[ActionList]
+[ActionList("Campaign content")]
 public class CampaignContentActions(InvocationContext invocationContext, IFileManagementClient fileManagementClient)
     : AppInvocable(invocationContext)
 {

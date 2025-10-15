@@ -14,7 +14,7 @@ using RestSharp;
 
 namespace Apps.Mailchimp.Actions;
 
-[ActionList]
+[ActionList("Campaigns")]
 public class CampaignActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
     [Action("Search campaigns", Description = "Search campaigns by specified criteria")]
